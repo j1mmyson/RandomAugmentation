@@ -42,26 +42,27 @@ def handle_requests_by_batch():
 threading.Thread(target=handle_requests_by_batch).start()
 
 
-def run(file, number):
-    image = Image.open(file).convert('RGB')
-    result = list()
-    images = asarray(image)
-
-    for _ in range(number):
-        temp = deepcopy(iaa.Sometimes(1, iaa.RandAugment(n=2, m=9))(image=images))
-        temp = Image.fromarray(temp, 'RGB')
-        result.append(temp)
-
+def run(files, number):
+    folder = 0
     zip_object = io.BytesIO()
     with zipfile.ZipFile(zip_object, mode="w") as zf:
-        i = 0
-        for img in result:
-            buf = io.BytesIO()
-            img.save(buf, 'png')
-            img_name = "aug_{:02d}.png".format(i)
-            i = i + 1
-            print("Writing image {:s} in the archive".format(img_name))
-            zf.writestr(img_name, buf.getvalue())
+        for file in files:
+            folder = folder + 1
+            image = Image.open(file).convert('RGB')
+            result = list()
+            images = asarray(image)
+            for _ in range(number):
+                temp = deepcopy(iaa.Sometimes(1, iaa.RandAugment(n=2, m=9))(image=images))
+                temp = Image.fromarray(temp, 'RGB')
+                result.append(temp)
+                i = 0
+                for img in result:
+                    buf = io.BytesIO()
+                    img.save(buf, 'png')
+                    img_name = str(folder) + "/aug_{:02d}.png".format(i)
+                    i = i + 1
+                    print("Writing image {:s} in the archive".format(img_name))
+                    zf.writestr(img_name, buf.getvalue())
     zip_object.seek(0)
     # img = base64.b64encode(img_io.getvalue())
 
@@ -78,14 +79,16 @@ def upload_file():
             return redirect(request.url)
 
         number = int(request.form['number'])
-        file = request.files['file']
+        # file = request.files['file']
+        files = request.files.getlist('file')
 
         try:
-            PIL.Image.open(file).convert("RGB")
+            for f in files:
+                PIL.Image.open(f).convert("RGB")
         except Exception:
             return render_template('index.html', result = 'Import image please'), 400
 
-        if file.filename == '':
+        if files[0].filename == '':
             print('no filename')
             return redirect(request.url)
 
@@ -94,7 +97,7 @@ def upload_file():
             return render_template('index.html', result = 'TooMany requests try again'), 429
 
         req = {
-            'input': [file, number]
+            'input': [files, number]
         }
         requests_queue.put(req)
 
