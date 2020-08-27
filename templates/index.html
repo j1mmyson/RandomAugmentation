@@ -36,16 +36,18 @@
                 <h1 style="text-align: left;">Random Augmentation</h1>
                 <!-- Github link and Ainize link -->
                 <div style="text-align: left;">
-                    <A>Git Hub repository : </A> <A href="https://github.com/Wook-2/EasyOCR">https://github.com/Wook-2/EasyOCR</A>
+                    <A>ImgAug Git Hub : </A> <A href="https://github.com/aleju/imgaug">https://github.com/aleju/imgaug</A>
                     <br>
-                    <A>Testing API : </A> <A href="https://ainize.ai/wook-2/easyocrgpu"> on Ainize </A>
+                    <A>Demo page Git Hub : </A> <A href="https://github.com/Wook-2/RandomAugmentation">https://github.com/Wook-2/RandomAugmentation</A>
+                    <br>
+                    <A>On Ainize : </A> <A href="https://ainize.ai/Wook-2/RandomAugmentation?branch=master"> https://ainize.ai/Wook-2/RandomAugmentation?branch=master </A>
                 </div>
                 <hr class="solid">
                     <div id = 'inputImage' style="text-align: left;">
                         <form action="" method="post" enctype="multipart/form-data">
                             <p style="text-align: left;">Import Image<br><input type='file' onchange="onFileSelected(event)" name='file' multiple></p>
                             <img id="myimage" style=" max-width: 300px;max-height: 300px; height: min-content;">
-                            <p>Choose number: <input type="number" name="number" value = 1 min="1" max="20"></p>
+                            <p>Times of Augmentation: <input type="number" name="number" value = 1 min="1" max="20"></p>
                             <br>
                                <input id="submit_btn"class="btn btn-primary btn-lg" style="margin-left: auto;" type=submit value='Augment & Download'>
                           </form>
