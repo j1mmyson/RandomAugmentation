@@ -45,7 +45,7 @@ threading.Thread(target=handle_requests_by_batch).start()
 def run(files, number):
     folder = 0
     zip_object = io.BytesIO()
-    with zipfile.ZipFile(zip_object, mode="w") as zf:
+    with zipfile.ZipFile(zip_object, "w", zipfile.ZIP_DEFLATED) as zf:
         for file in files:
             folder = folder + 1
             image = Image.open(file).convert('RGB')
@@ -58,8 +58,8 @@ def run(files, number):
                 i = 0
                 for img in result:
                     buf = io.BytesIO()
-                    img.save(buf, 'png')
-                    img_name = str(folder) + "/aug_{:02d}.png".format(i)
+                    img.save(buf, 'jpeg')
+                    img_name = str(folder) + "/aug_{:02d}.jpeg".format(i)
                     i = i + 1
                     print("Writing image {:s} in the archive".format(img_name))
                     zf.writestr(img_name, buf.getvalue())
@@ -72,14 +72,19 @@ def run(files, number):
 # Web server
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
+@app.route('/augment', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         if 'file' not in request.files:
             print('no file')
             return redirect(request.url)
 
+        try:
+            number = int(request.form['number'])
+        except:
+            return render_template('index.html', result = 'number must be integer'), 400
+        
         number = int(request.form['number'])
-        # file = request.files['file']
         files = request.files.getlist('file')
 
         try:
