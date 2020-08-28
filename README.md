@@ -1,6 +1,7 @@
 ## Random Augmentation
-![enter image description here](https://github.com/Wook-2/RandomAugmentation/blob/master/static/example.png?raw=true)
 This project is deploying web demo of ***[IMGAUG]([https://github.com/aleju/imgaug](https://github.com/aleju/imgaug))*** *[option: Random augment]* for who want to augment images easily.
+![enter image description here](https://github.com/Wook-2/RandomAugmentation/blob/master/static/example.png?raw=true)
+
 ### DEMO PAGE
 ---
 [![Run on Ainize](https://ainize.ai/images/run_on_ainize_button.svg)](https://ainize.web.app/redirect?git_repo=https://github.com/Wook-2/RandomAugmentation)
