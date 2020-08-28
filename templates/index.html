@@ -17,7 +17,8 @@
         function onFileSelected(event){
             var selectedFile = event.target.files[0];
             var reader = new FileReader();
-            
+            var error = document.getElementById("error");
+            error.style.visibility="hidden";
             var imgtag = document.getElementById("myimage");
             imgtag.title = selectedFile.name;
 
@@ -32,10 +33,31 @@
         <div class = "container">
             <div class="jumbotron mt-3">
                  <!-- Proejct Title -->
-                 
+                
                 <h1 style="text-align: left;">Random Augmentation</h1>
+                <hr class="solid">
+
                 <!-- Github link and Ainize link -->
                 <div style="text-align: left;">
+                    <br>
+                    <p style="font-weight: bold;">Description</p>
+                    <p>It helps you with augmenting images for your machine learning projects.<br>
+                    It converts a set of input images into a new, much larger set of slightly altered images.
+                    </p>
+                    <p style="font-weight: bold;">Features</p>
+                    <ul>
+                        <li>Mix many augmentation techniques.</li>
+                        <ul>
+                            <li>affine transformations, gausian noise, dropout, blurring, contrast changes, cropping/padding, ...</li>
+                            <li>Optimized for high performance.</li>
+                        </ul>
+                        <li>Easy to use.</li>
+                        <li>No installation necessary.</li>
+                        
+                    </ul>
+                    
+                    <p style="font-weight: bold;">
+                        Links</p>
                     <A>ImgAug Git Hub : </A> <A href="https://github.com/aleju/imgaug">https://github.com/aleju/imgaug</A>
                     <br>
                     <A>Demo Git Hub : </A> <A href="https://github.com/Wook-2/RandomAugmentation">https://github.com/Wook-2/RandomAugmentation</A>
@@ -46,23 +68,30 @@
 
                 <div style="width:100%;">
                     <h2>Example</h2>
-                    <img src="../static/example.png" alt="" style="border-radius: 5px; width: 80%; margin-left: auto; margin-right: auto; display: block;"></img>
+                    <p style="font-weight: bold;">Example results of your augmentation sequence.</p>
+                    <img src="../static/example1.png" alt="" style="border-radius: 5px; width: 80%; margin-left: auto; margin-right: auto; display: block;"></img>
                 </div>
 
                 <hr class="solid">
+                    <h2>Let`s Try</h2>
                     <div id = 'inputImage' style="text-align: left;">
                         <form action="" method="post" enctype="multipart/form-data">
-                            <p style="text-align: left;">Import Image<br><input type='file' onchange="onFileSelected(event)" name='file' multiple></p>
+                            <p style="text-align: left;">Import Images(could be multiple)<br><input type='file' onchange="onFileSelected(event)" name='file' multiple></p>
                             <img id="myimage" style=" max-width: 300px;max-height: 300px; height: min-content;">
-                            <p>Times of Augmentation(max:30): <input type="number" name="number" value = 1 min="1" max="30"></p>
+                            <p>Numbers of Augmented Images (max: 30)<br><input type="number" name="number" value = 1 min="1" max="30"></p>
                             <br>
-                               <input id="submit_btn"class="btn btn-primary btn-lg" style="margin-left: auto;" type=submit value='Augment & Download'>
+                               <input id="submit_btn"class="btn btn-primary btn-lg" style="margin-left: auto;" type=submit value='Augment & Download'><br>
+                               <p>(Automatically downloads to the zip file.)</p>
                           </form>
                     </div>
                 <!-- Result Box -->
+                <div id="error">
                 {% if result %}
+                
                 <h2>Error: {{ result }}</h2>
+                
                 {% endif %}
+                </div>
             </div>
         </div>
         <div id="badge" OnClick="location.href='https://join.slack.com/t/ainetwork-dev/shared_invite/zt-c89mb8z9-IqaCsNmsNLXKNylKXrJTTg'"
