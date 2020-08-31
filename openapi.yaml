@@ -3,20 +3,22 @@ openapi: 3.0.1
 info:
   title: Random Augmentation
   description:  |
-    ### Description
-      It helps you with augmenting images for your machine learning projects.
+    ## Description
+      Random Augmentation helps you with augmenting images for your machine learning projects.<br>
       It converts a set of input images into a new, much larger set of slightly altered images.
     ---
-    ### How to use
+    ## How to use
       * Pick image what you want to augment
       * Excute and wait until the result shows up
     ---
+    Can`t download zipfile under swagger api.<br>
+    Try in [WebDemo](https://master-random-augmentation-wook-2.endpoint.ainize.ai)
   version: 1.0.0
   license:
     name: "MIT"
     url: ""
 servers:
-  - url: 'https://master-random-augmentation-wook-2.endpoint.ainize.ai/augment'
+  - url: 'https://master-random-augmentation-wook-2.endpoint.ainize.ai'
 
 paths:
   /augment:
@@ -48,7 +50,7 @@ paths:
          '200':
             description: success
             content:
-              application/zip:
+              application/octet-stream:
                   schema:
                     type: string
                     format: binary
