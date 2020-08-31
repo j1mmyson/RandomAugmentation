@@ -29,11 +29,8 @@ then visit : *[localhost:8000](https://localhost:8000)*
 #### Using Curl
 
     $ curl -X POST "https://master-random-augmentation-wook-2.endpoint.ainize.ai/augment" \
-    
     -H "accept: application/octet-stream" -H "Content-Type: multipart/form-data" \
-    
     -F "file=@{your_image_path};type=image/jpeg" \
-    
     -F "number={numbers of augmented images}" -o {output_file_name}.zip
 Fill in {your_image_path, numbers of augmented images, output_file_name} to suit your situation.
 
