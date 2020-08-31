@@ -16,7 +16,7 @@ import threading
 UPLOAD_FOLDER = 'static/uploads'
 
 app = Flask(__name__, template_folder='templates')
-app.config['MAX_CONTENT_LENGTH'] = 1024 * 512
+app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
 
 requests_queue = Queue()
 BATCH_SIZE = 1
