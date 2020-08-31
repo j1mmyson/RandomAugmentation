@@ -69,50 +69,52 @@ def run(files, number):
     return zip_object.getvalue()
 
 
-# Web server
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
-@app.route('/augment', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            print('no file')
-            return redirect(request.url)
-
-        try:
-            number = int(request.form['number'])
-        except:
-            return render_template('index.html', result = 'number must be integer'), 400
-        
-        number = int(request.form['number'])
-        files = request.files.getlist('file')
-
-        try:
-            for f in files:
-                PIL.Image.open(f).convert("RGB")
-        except Exception:
-            return render_template('index.html', result = 'Import image please'), 400
-
-        if files[0].filename == '':
-            print('no filename')
-            return redirect(request.url)
-
-        # stateless image
-        if requests_queue.qsize() >= BATCH_SIZE:
-            return render_template('index.html', result = 'TooMany requests try again'), 429
-
-        req = {
-            'input': [files, number]
-        }
-        requests_queue.put(req)
-
-        while 'output' not in req:
-            time.sleep(CHECK_INTERVAL)
-
-        byte_io = io.BytesIO(req['output'])
-        byte_io.seek(0)
-        return send_file(byte_io, attachment_filename='aug.zip', as_attachment=True)
+@app.route('/', methods=['GET'])
+def index():
     return render_template('index.html')
+
+# Web server
+
+@app.route('/augment', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        print('no file')
+        return redirect(request.url)
+
+    try:
+        number = int(request.form['number'])
+    except:
+        return render_template('index.html', result = 'number must be integer'), 400
+    
+    number = int(request.form['number'])
+    files = request.files.getlist('file')
+
+    try:
+        for f in files:
+            PIL.Image.open(f).convert("RGB")
+    except Exception:
+        return render_template('index.html', result = 'Import image please'), 400
+
+    if files[0].filename == '':
+        print('no filename')
+        return redirect(request.url)
+
+    # stateless image
+    if requests_queue.qsize() >= BATCH_SIZE:
+        return render_template('index.html', result = 'TooMany requests try again'), 429
+
+    req = {
+        'input': [files, number]
+    }
+    requests_queue.put(req)
+
+    while 'output' not in req:
+        time.sleep(CHECK_INTERVAL)
+
+    byte_io = io.BytesIO(req['output'])
+    byte_io.seek(0)
+    return send_file(byte_io, attachment_filename='aug.zip', as_attachment=True)
+
 
 
 @app.route('/healthz', methods=['GET'])

@@ -17,7 +17,7 @@ servers:
   - url: 'https://master-random-augmentation-wook-2.endpoint.ainize.ai/augment'
 
 paths:
-  /:
+  /augment:
     post:
       tags:
       - Augmentor
