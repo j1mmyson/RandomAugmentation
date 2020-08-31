@@ -20,18 +20,41 @@
         function ableBtn(){
             document.getElementById("submit_btn").disabled = false;
         }
-        function onFileSelected(event){
-            var selectedFile = event.target.files[0];
-            var reader = new FileReader();
+        
+        function readmultifiles(files) {
+            var reader = new FileReader();  
+            function readFile(index) {
+                if( index >= files.length ) return;
+                var file = files[index];
+                reader.onload = function(e) {  
+                // get file content  
+                var bin = e.target.result;
+                // do sth with bin
+                readFile(index+1)
+                }
+                reader.readAsBinaryString(file);
+            }
+            readFile(0);
+        }
+        function showImages(event){
+            document.getElementById('imagebox').innerHTML = "";
             var error = document.getElementById("error");
             error.style.visibility="hidden";
-            var imgtag = document.getElementById("myimage");
-            imgtag.title = selectedFile.name;
+            for (i = 0; i < event.target.files.length; i++) {
+                let selectedFile = event.target.files[i];
+                let reader = new FileReader();
+                let imgtag = document.createElement("IMG");
+                imgtag.title = selectedFile.name;
 
-            reader.onload = function(event) {
-                imgtag.src = event.target.result;
-            };
-            reader.readAsDataURL(selectedFile);
+                reader.onload = function(event){
+                    console.log(event);
+                    imgtag.src = event.target.result;
+                };
+                reader.readAsDataURL(selectedFile);
+                imgtag.style.maxHeight = '100px';
+                imgtag.style.maxWidth = '100px';
+                document.getElementById("imagebox").appendChild(imgtag);
+            }
             document.getElementById("submit_btn").disabled = false;
         }
     </script>
@@ -77,8 +100,11 @@
                     <h2>Let’s Try</h2>
                     <div id = 'inputImage' style="text-align: left;">
                         <form action="" method="post" enctype="multipart/form-data" onsubmit="disableBtn()">
-                            <p style="text-align: left;">Import Images(could be multiple)<br><input type='file' onchange="onFileSelected(event)" name='file' multiple></p>
-                            <img id="myimage" style=" max-width: 300px;max-height: 300px; height: min-content;">
+                            <p style="text-align: left;">Import Images(could be multiple)<br><input type='file' onchange="showImages(event)" name='file' multiple></p>
+                            <div id="imagebox" style="max-width:300px;height: min-content;object-fit: cover;">
+
+                            </div>
+                            
                             <p>Numbers of Augmented Images: <input type="number" name="number" value = 15 min="1" max="15" onchange="ableBtn()">(max: 15)</p>
                             <br>
                                <input id="submit_btn"class="btn btn-primary btn-lg" style="margin-left: auto;" type=submit value='Augment & Download'><br>
