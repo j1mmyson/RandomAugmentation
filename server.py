@@ -55,17 +55,17 @@ def run(files, number):
                 temp = deepcopy(iaa.Sometimes(1, iaa.RandAugment(n=2, m=9))(image=images))
                 temp = Image.fromarray(temp, 'RGB')
                 result.append(temp)
-                i = 0
-                for img in result:
-                    buf = io.BytesIO()
-                    img.save(buf, 'jpeg')
-                    img_name = str(folder) + "/aug_{:02d}.jpeg".format(i)
-                    i = i + 1
-                    print("Writing image {:s} in the archive".format(img_name))
-                    zf.writestr(img_name, buf.getvalue())
+            i = 0
+            for img in result:
+                buf = io.BytesIO()
+                img.save(buf, 'jpeg')
+                img_name = str(folder) + "/aug_{:02d}.jpeg".format(i)
+                i = i + 1
+                print("Writing image {:s} in the archive".format(img_name))
+                zf.writestr(img_name, buf.getvalue())
     zip_object.seek(0)
     # img = base64.b64encode(img_io.getvalue())
-
+    
     return zip_object.getvalue()
     
 
@@ -110,7 +110,7 @@ def upload_file():
 
         byte_io = io.BytesIO(req['output'])
         byte_io.seek(0)
-        return send_file(byte_io, attachment_filename='aug.zip', as_attachment=True)
+        return send_file(byte_io, download_name='aug.zip', as_attachment=True)
     return render_template('index.html')
 
 
